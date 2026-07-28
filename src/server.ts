@@ -5,27 +5,26 @@ import {
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
 import express from 'express';
+import { createServer } from 'node:http';
 import { join } from 'node:path';
+import { SocketHandler } from './server/controllers';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: ['localhost', 'localhost:4000', 'your-production-domain.com']
+
+});
+
+// 1. Instância do servidor HTTP unificado
+const server = createServer(app);
+
+// 2. Anexa o Socket.IO ao servidor HTTP
+SocketHandler.setup(server);
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/{*splat}', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
-
-/**
- * Serve static files from /browser
+ * Serve arquivos estáticos da pasta /browser
  */
 app.use(
   express.static(browserDistFolder, {
@@ -36,9 +35,13 @@ app.use(
 );
 
 /**
- * Handle all other requests by rendering the Angular application.
+ * Bypass de rotas do Socket.IO para não passar pelo renderizador do Angular SSR
  */
 app.use((req, res, next) => {
+  if (req.url?.startsWith('/socket.io/')) {
+    return next();
+  }
+
   angularApp
     .handle(req)
     .then((response) =>
@@ -48,21 +51,17 @@ app.use((req, res, next) => {
 });
 
 /**
- * Start the server if this module is the main entry point, or it is ran via PM2.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ * Inicialização em ambiente standalone (ex: node server.mjs / PM2)
  */
 if (isMainModule(import.meta.url) || process.env['pm_id']) {
   const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
-    if (error) {
-      throw error;
-    }
 
-    console.log(`Node Express server listening on http://localhost:${port}`);
+  server.listen(port, () => {
+    console.log(`🚀 Servidor unificado (Angular SSR + WebSocket) rodando na porta ${port}`);
   });
 }
 
 /**
- * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ * O createNodeRequestHandler do Angular SSR exige o app (Express) como argumento
  */
 export const reqHandler = createNodeRequestHandler(app);

@@ -1,0 +1,87 @@
+$primary-color: #007bff;
+$primary-hover: #0056b3;
+$error-color: #dc3545;
+$font-sans: sans-serif;
+
+
+.form {
+    width: 95vw;
+    height: 95vh;
+    border-radius: 12px;
+    background-color: aliceblue;
+    box-shadow: 0px 2px 2px 0px black;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h2{
+        color: rgb(255, 200, 0);
+    }
+
+    &-btn {
+        width: 80%;
+        height: 10vw;
+        background-color: rgb(255, 200, 0);
+        color: black;
+        margin: 30px;
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        transition: 500ms ease-in-out;
+
+        &:hover {
+            transition: 500ms ease-in-out;
+            color: rgb(255, 200, 0);
+            background-color: white;
+            border: rgb(255, 200, 0);
+        }
+
+    }
+
+    &-section {
+        border: none;
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                background-color: #fff;
+            }
+
+            // Estilização do input quando houver erro de validação (Signal Forms)
+            &.ng-touched.ng-invalid,
+            &.is-invalid {
+                border-color: $error-color;
+                background-color: #fff;
+
+                &:focus {
+                    box-shadow: 0 0 0 0.2rem rgba($error-color, 0.25);
+                }
+            }
+        }
+    }
+}
+
+.input-invalid {
+    color: #dc3545;
+    font-weight: 500;
+}

@@ -1,0 +1,10 @@
+
+
+<section class="user-card">
+    <h2> usuários na sala </h2>
+    <h3> Espere o anfitrião iniciar a partida </h3>
+
+    @for (userName of this.userList.userData(); track $index) {
+        <p> {{userName}} </p>
+    }
+</section>

@@ -1,0 +1,17 @@
+<form class="form">
+
+    <h2>bem vindo</h2>
+    <section class="form-section">
+        <label for="userName"> Digite o seu nome</label>
+        <input type="text" id="userName" placeholder="seu nome aqui" [formField]="this.form.userName">
+        @if(form.userName().touched()){
+        @if(form.userName().invalid()){
+        <span class="input-invalid"> {{ form.userName().errors()[0].message }} </span>
+        }
+        }
+    </section>
+
+    <button class="form-btn" type="button" (click)="this.submitForm()">
+        Entrar
+    </button>
+</form>

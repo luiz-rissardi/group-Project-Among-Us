@@ -1,0 +1,13 @@
+<section class="form">
+
+    @if (this.userState.userData().isAmong) {
+    <h1 class="input-invalid"> VOCÊ É O IMPOSTOR, NÃO SEJA PEGO </h1>
+    <h1 class="input-invalid"> SUA DICA É: NOMES DE SANTOS </h1>
+
+    }
+    @else {
+    <h1 class="valid"> ENCONTRE O IMPOSTOR</h1>
+    <H2 class="valid"> A PALAVRA CHAVE É: {{this.userState.userData().userId}} </H2>
+    }
+
+</section>

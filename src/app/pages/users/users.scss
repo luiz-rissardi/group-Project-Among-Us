@@ -1,0 +1,18 @@
+.user {
+    &-card {
+        width: 95vw;
+        height: 95vh;
+        border-radius: 12px;
+        background-color: aliceblue;
+        box-shadow: 0px 2px 2px 0px black;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h2, h3 {
+            color: rgb(255, 200, 0);
+        }
+    }
+}
